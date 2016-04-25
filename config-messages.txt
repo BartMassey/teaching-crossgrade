@@ -1,0 +1,5 @@
+// list the title (unique) and the text of each message
+// should you change the title of a message, a new message will be created with the previous message still remaining in the database
+
+title 1;an example text;
+title 2;an example text;

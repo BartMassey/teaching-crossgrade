@@ -1,0 +1,9 @@
+// list the cas name (unique) and the e-mail of each student
+// should you change the cas name of a student, a new student will be created with the previous student still remaining in the database
+// to exclude a student from future assignments, simply remove him from this list / comment his name out - he will still be in the database and will still be able to login and access the previous assignments
+
+holzknecht;holzknecht@pdx.edu;
+becker;becker@pdx.edu;
+schwangau;schwangau@pdx.edu;
+strohkirch;strohkirch@pdx.edu;
+bomhoff;bomhoff@pdx.edu;

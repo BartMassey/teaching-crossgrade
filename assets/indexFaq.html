@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>crossgrade.svcs.cs.pdx.edu</title>
+    
+    <style type="text/css">
+		.bs-callout-info {
+		    background-color:#F8F8F8;
+		}
+		
+		.bs-callout {
+		    margin:20px 0px;
+		    padding:20px;
+		    border-left:3px solid #E7E7E7;
+		}
+    </style>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    <link href="css/plugins/timeline/timeline.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Core Scripts - Include with every page -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <!-- Page-Level Plugin Scripts - Include with every page -->
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js"></script>
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="js/sb-admin.js"></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom:0px;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">crossgrade</a>
+            </div>
+        </nav>
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/indexFaq.html"><i class="fa fa-question fa-fw"></i> faq</a>
+                    </li>
+                    <li>
+                        <a href="/indexMessages.html"><i class="fa fa-bell fa-fw"></i> messages</a>
+                    </li>
+                    <li>
+                        <a href="/indexSubmissions.html"><i class="fa fa-thumb-tack fa-fw"></i> submissions</a>
+                    </li>
+                    <li>
+                        <a href="/indexEvaluations.html"><i class="fa fa-thumbs-up fa-fw"></i> evaluations</a>
+                    </li>
+                    <li>
+                        <a href="/logout"><i class="fa fa-user fa-fw"></i> logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+		
+        <script type="text/javascript">
+			jQuery(function() {
+			    jQuery(window).resize(function() {
+			        jQuery('#page-wrapper')
+			        	.css({
+			        		'min-height': (jQuery(window).height() - jQuery('#page-wrapper').offset().top) + 'px'
+			        	})
+			        ;
+			    });
+			    
+			    jQuery(window).resize();
+			});
+        </script>
+
+        <div id="page-wrapper">
+            <div class="row" style="max-width:1000px;">
+                <div class="col-lg-12">
+                    <h1 class="page-header">faq</h1>
+                </div>
+            </div>
+            <div class="row" style="max-width:1000px;">
+                <div class="col-lg-12">
+					<div class="bs-callout bs-callout-info">
+					    <h4>what if i would like to upload multiple files?</h4>
+					    <p>use a zip archive to combine those files. make sure to only use zip, since other students have to be able to open the archive and zip is probably the most common format.</p>
+					</div>
+					<div class="bs-callout bs-callout-info">
+					    <h4>what if i upload a submission / evaluation again?</h4>
+					    <p>your previous upload will be overwritten. feel free to double check this by downloading your uploaded file and comparing it.</p>
+					</div>
+					<div class="bs-callout bs-callout-info">
+					    <h4>what if i have not been able to meet a deadline?</h4>
+					    <p>please get in touch with the teaching assistant.</p>
+					</div>
+					<div class="bs-callout bs-callout-info">
+					    <h4>what if the file of a submission i have to evaluate is unknown?</h4>
+					    <p>the student that you have to evaluate did not upload a file. he might submit something after the deadline though, so make sure to check back later.</p>
+					</div>
+					<div class="bs-callout bs-callout-info">
+					    <h4>any questions left?</h4>
+						<p>feel free to send me your questions - i highly appreciate any suggestions in order to extend this list.</p>
+					</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

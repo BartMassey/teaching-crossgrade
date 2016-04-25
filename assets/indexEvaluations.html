@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>crossgrade.svcs.cs.pdx.edu</title>
+    
+    <style type="text/css">
+		.bs-callout-info {
+		    background-color:#F8F8F8;
+		}
+		
+		.bs-callout {
+		    margin:20px 0px;
+		    padding:20px;
+		    border-left:3px solid #E7E7E7;
+		}
+    </style>
+
+    <!-- Core CSS - Include with every page -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    <link href="css/plugins/timeline/timeline.css" rel="stylesheet">
+
+    <!-- SB Admin CSS - Include with every page -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+    
+    <!-- Core Scripts - Include with every page -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+    <!-- Page-Level Plugin Scripts - Include with every page -->
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.6.0/moment.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.iframe-transport.min.js"></script>
+	<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.5.7/jquery.fileupload.min.js"></script>
+
+    <!-- SB Admin Scripts - Include with every page -->
+    <script src="js/sb-admin.js"></script>
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom:0px;">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">crossgrade</a>
+            </div>
+        </nav>
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li>
+                        <a href="/indexFaq.html"><i class="fa fa-question fa-fw"></i> faq</a>
+                    </li>
+                    <li>
+                        <a href="/indexMessages.html"><i class="fa fa-bell fa-fw"></i> messages</a>
+                    </li>
+                    <li>
+                        <a href="/indexSubmissions.html"><i class="fa fa-thumb-tack fa-fw"></i> submissions</a>
+                    </li>
+                    <li>
+                        <a href="/indexEvaluations.html"><i class="fa fa-thumbs-up fa-fw"></i> evaluations</a>
+                    </li>
+                    <li>
+                        <a href="/logout"><i class="fa fa-user fa-fw"></i> logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <script type="text/javascript">
+			jQuery(function() {
+			    jQuery(window).resize(function() {
+			        jQuery('#page-wrapper')
+			        	.css({
+			        		'min-height': (jQuery(window).height() - jQuery('#page-wrapper').offset().top) + 'px'
+			        	})
+			        ;
+			    });
+			    
+			    jQuery(window).resize();
+			});
+        </script>
+
+        <div id="page-wrapper">
+            <div class="row" style="max-width:1000px;">
+                <div class="col-lg-12">
+                    <h1 class="page-header">evaluations</h1>
+                </div>
+            </div>
+            <div class="row" style="max-width:1000px;">
+                <div class="col-lg-12">
+
+					<div style="position:absolute; left:-1024px; top:-1024px;">
+						<input id="general_file" type="file" />
+					</div>
+					
+					<div class="modal" id="general_modal">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-body" style="padding-bottom:0px;">
+									<div class="alert alert-info">
+										processing - please wait
+									</div>
+									<div class="alert alert-danger">
+										an error occured - your file might be too big - feel free to try it again
+									</div>
+									<div class="alert alert-danger">
+										an error occured - the deadline might be exceeded - feel free to try it again
+									</div>
+									<div class="alert alert-success">
+										well done - your evaluation has been received
+									</div>
+									<div class="progress">
+										<div class="progress-bar"></div>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-primary" onclick="window.location.reload();">reload</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+{{#assignmentHandle}}
+    <div class="panel panel-default" id="assignment{{assignmentHandle_intIdent}}">
+        <div class="panel-heading">
+            {{assignmentHandle_strName}}
+        </div>
+        <div class="panel-body" style="padding-bottom:0px;">
+			<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" style="margin-top:3px;">deadline</label>
+					<div class="col-sm-10">
+						<pre style="margin:0px;"><script type="text/javascript">document.write(moment.unix({{assignmentHandle_intEvaluate}}).format('D MMMM YYYY - hh:mm:ss A'));</script></pre>
+					</div>
+				</div>
+			</form>
+			
+			<hr></hr>
+			
+			<form class="form-horizontal" role="form">
+				<div class="form-group">
+					<label class="col-sm-2 control-label" style="margin-top:3px;">choose</label>
+					<div class="col-sm-10">
+			            <ul class="nav nav-pills">
+			                <li class="active"><a href="#assignment{{assignmentHandle_intIdent}}_outgoing" data-toggle="tab">outgoing</a></li>
+			                <li><a href="#assignment{{assignmentHandle_intIdent}}_incoming" data-toggle="tab">incoming</a></li>
+			            </ul>
+					</div>
+				</div>
+			</form>
+            
+			<hr></hr>
+			
+            <div class="tab-content">
+                <div class="tab-pane active" id="assignment{{assignmentHandle_intIdent}}_outgoing">
+
+{{#evaluationOutgoing}}
+	<form class="form-horizontal" role="form" id="assignment{{assignmentHandle_intIdent}}_outgoing{{evaluationHandle_intIdent}}">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="margin-top:3px;">submission</label>
+			<div class="col-sm-8">
+				<pre style="margin:0px;">{{submissionHandle_strFile}}</pre>
+			</div>
+			<div class="col-sm-2">
+				<a class="btn btn-primary btn-block" style="height:39px; line-height:25px;" href="/submission/{{submissionHandle_strFile}}">download</a>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="margin-top:3px;">rating</label>
+			<div class="col-sm-10">
+				<select class="form-control">
+					<option>10</option>
+					<option>9</option>
+					<option>8</option>
+					<option>7</option>
+					<option>6</option>
+					<option>5</option>
+					<option>4</option>
+					<option>3</option>
+					<option>2</option>
+					<option>1</option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="margin-top:3px;">evaluation</label>
+			<div class="col-sm-6">
+				<pre style="margin:0px;">{{evaluationHandle_strFile}}</pre>
+			</div>
+			<div class="col-sm-2">
+				<button type="button" class="btn btn-primary btn-block" style="height:39px;">upload</button>
+			</div>
+			<div class="col-sm-2">
+				<a class="btn btn-primary btn-block" style="height:39px; line-height:25px;" href="/evaluation/{{evaluationHandle_strFile}}">download</a>
+			</div>
+		</div>
+	</form>
+	
+	<hr></hr>
+	
+	<script type="text/javascript">
+		{
+			jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing{{evaluationHandle_intIdent}}').find('select').eq(0)
+				.val({{evaluationHandle_intPoints}})
+				.off('change')
+				.on('change', function() {
+					var intPoints = jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing{{evaluationHandle_intIdent}}').find('select').eq(0).val();
+					
+					jQuery.ajax({
+						'async': true,
+						'type': 'POST',
+						'url': '/indexEvaluations_intPoints.xml?intEvaluation=' + encodeURIComponent({{evaluationHandle_intIdent}}) + '&intPoints=' + encodeURIComponent(intPoints),
+						'dataType': 'xml',
+						'beforeSend': function() {
+							jQuery('#general_modal').find('.alert')
+								.css({
+									'display': 'none'
+								})
+							;
+							
+							jQuery('#general_modal').find('.alert').eq(0)
+								.css({
+									'display': 'block'
+								})
+							;
+							
+							jQuery('#general_modal').find('.btn').eq(0)
+								.addClass('disabled')
+							;
+							
+							jQuery('#general_modal')
+								.modal({
+									'keyboard': false
+								})
+							;
+						},
+						'success': function(xmlHandle) {
+							var strResponse = jQuery(xmlHandle).children('xml').children('strResponse').text();
+							
+							jQuery('#general_modal').find('.alert')
+								.css({
+									'display': 'none'
+								})
+							;
+							
+							if (strResponse === '') {
+								jQuery('#general_modal').find('.alert').eq(1)
+									.css({
+										'display': 'block'
+									})
+								;
+								
+							} else if (strResponse === 'responseError') {
+								jQuery('#general_modal').find('.alert').eq(2)
+									.css({
+										'display': 'block'
+									})
+								;
+								
+							} else if (strResponse === 'responseSuccess') {
+								jQuery('#general_modal').find('.alert').eq(3)
+									.css({
+										'display': 'block'
+									})
+								;
+								
+							}
+							
+							jQuery('#general_modal').find('.btn').eq(0)
+								.removeClass('disabled')
+							;
+							
+							jQuery('#general_modal')
+								.modal({
+									'keyboard': false
+								})
+							;
+						}
+					});
+				})
+			;
+		}
+		
+		{
+			jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing{{evaluationHandle_intIdent}}').find('.btn').eq(1)
+				.off('click')
+				.on('click', function() {
+					jQuery('#general_file')
+						.fileupload({
+							'url': '/indexEvaluations_strFile.xml?intEvaluation=' + encodeURIComponent({{evaluationHandle_intIdent}}),
+							'dataType': 'xml',
+							'paramName': 'fileHandle',
+							'add': function(errorHandle, dataHandle) {
+								jQuery('#general_modal').find('.alert')
+									.css({
+										'display': 'none'
+									})
+								;
+								
+								jQuery('#general_modal').find('.alert').eq(0)
+									.css({
+										'display': 'block'
+									})
+								;
+								
+								jQuery('#general_modal').find('.btn').eq(0)
+									.addClass('disabled')
+								;
+								
+								jQuery('#general_modal')
+									.modal({
+										'keyboard': false
+									})
+								;
+								
+								dataHandle.submit();
+							},
+							'progressall': function(errorHandle, dataHandle) {
+								jQuery('#general_modal').find('.progress-bar').eq(0)
+									.css({
+										'width': ((dataHandle.loaded / dataHandle.total) * 100.0) + '%'
+									})
+								;
+							},
+							'always': function(errorHandle, dataHandle) {
+								var strResponse = jQuery(dataHandle.result).children('xml').children('strResponse').text();
+								
+								jQuery('#general_modal').find('.alert')
+									.css({
+										'display': 'none'
+									})
+								;
+								
+								if (strResponse === '') {
+									jQuery('#general_modal').find('.alert').eq(1)
+										.css({
+											'display': 'block'
+										})
+									;
+									
+								} else if (strResponse === 'responseError') {
+									jQuery('#general_modal').find('.alert').eq(2)
+										.css({
+											'display': 'block'
+										})
+									;
+									
+								} else if (strResponse === 'responseSuccess') {
+									jQuery('#general_modal').find('.alert').eq(3)
+										.css({
+											'display': 'block'
+										})
+									;
+									
+								}
+								
+								jQuery('#general_modal').find('.btn').eq(0)
+									.removeClass('disabled')
+								;
+								
+								jQuery('#general_modal')
+									.modal({
+										'keyboard': false
+									})
+								;
+							}
+						})
+					;
+				
+					jQuery('#general_file')
+						.click()
+					;
+				})
+			;
+		}
+		
+		{
+			var intCurrent = new Date().getTime() / 1000;
+			
+			if (intCurrent > Math.max({{assignmentHandle_intEvaluate}}, {{evaluationHandle_intExtension}})) {
+				jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing{{evaluationHandle_intIdent}}').find('select').eq(0)
+					.addClass('btn-danger')
+					.attr({
+						'disabled': 'disabled'
+					})
+				;
+				
+				jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing{{evaluationHandle_intIdent}}').find('.btn').eq(1)
+					.addClass('btn-danger')
+					.attr({
+						'disabled': 'disabled'
+					})
+				;
+			}
+		}
+	</script>
+{{/evaluationOutgoing}}
+
+                </div>
+                <div class="tab-pane" id="assignment{{assignmentHandle_intIdent}}_incoming">
+
+{{#evaluationIncoming}}
+	<form class="form-horizontal" role="form">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="margin-top:3px;">points</label>
+			<div class="col-sm-10">
+				<pre style="margin:0px;">{{evaluationHandle_intPoints}}</pre>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" style="margin-top:3px;">evaluation</label>
+			<div class="col-sm-8">
+				<pre style="margin:0px;">{{evaluationHandle_strFile}}</pre>
+			</div>
+			<div class="col-sm-2">
+				<a class="btn btn-primary btn-block" style="height:39px; line-height:25px;" href="/evaluation/{{evaluationHandle_strFile}}">download</a>
+			</div>
+		</div>
+	</form>
+	
+	<hr></hr>
+{{/evaluationIncoming}}
+
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<script type="text/javascript">
+		{
+			if(jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing').find('form').size() === 0) {
+				jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing')
+					.append(
+						'<form class="form-horizontal" role="form">' +
+							'<div class="form-group">' +
+								'<label class="col-sm-2 control-label" style="margin-top:3px;">error</label>' +
+								'<div class="col-sm-10">' +
+									'<pre style="margin:0px;">either the deadline for the submission has not yet been reached, an error occurred or there is nothing to evaluate - in case you think that there has been a problem, please get in touch with the teaching assistant</pre>' +
+								'</div>' +
+							'</div>' +
+						'</form>'
+					)
+				;
+			}
+			
+			if(jQuery('#assignment{{assignmentHandle_intIdent}}_incoming').find('form').size() === 0) {
+				jQuery('#assignment{{assignmentHandle_intIdent}}_incoming')
+					.append(
+						'<form class="form-horizontal" role="form">' +
+							'<div class="form-group">' +
+								'<label class="col-sm-2 control-label" style="margin-top:3px;">error</label>' +
+								'<div class="col-sm-10">' +
+									'<pre style="margin:0px;">either the deadline for the evaluation has not yet been reached or an error occurred - in case you think that there has been a problem, please get in touch with the teaching assistant</pre>' +
+								'</div>' +
+							'</div>' +
+						'</form>'
+					)
+				;
+			}
+		}
+		
+		{
+			jQuery('#assignment{{assignmentHandle_intIdent}}_outgoing').find('hr').last()
+				.remove()
+			;
+		
+			jQuery('#assignment{{assignmentHandle_intIdent}}_incoming').find('hr').last()
+				.remove()
+			;
+		}
+	</script>
+{{/assignmentHandle}}
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

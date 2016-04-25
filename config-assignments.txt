@@ -1,0 +1,6 @@
+// list the name (unique), the submission deadline (epoch in seconds), the evaluation deadline (epoch in seconds) and the crossgrading factor of each assignment
+// should you change the name of a submission, a new submission will be created with the previous submission still remaining in the database
+// the epoch time can be retrieved from www.epochconverter.com - remember to use the local time instead of greenwich mean time
+
+assignment 1;1461603600;1461690000;3;
+assignment 2;1461776400;1461862800;3;
