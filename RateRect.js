@@ -17,6 +17,8 @@ var Recaptcha = NodeRect.Recaptcha;
 var Socket = NodeRect.Socket;
 var Xml = NodeRect.Xml;
 
+var RateConf = require(__dirname + '/RateConf.js')();
+
 var Casable = {
 	casableHandle: null,
 	
@@ -48,9 +50,9 @@ var Casable = {
 		}
 		
 		{
-			Casable.clientHandle = Casable.casableHandle.authentication('https://sso.pdx.edu/cas', {
-				'casVersion': '2.0',
-				'logoutPath': 'https://sso.pdx.edu/cas/logout'
+			Casable.clientHandle = Casable.casableHandle.authentication(RateConf.strCasAuth, {
+				'casVersion': RateConf.strCasVersion,
+				'logoutPath': RateConf.strCasLogout
 			});
 		}
 	},
@@ -1639,6 +1641,10 @@ Sqlite.init();
 {
 	var functionDirectories = function() {
 		{
+			Node.fsHandle.mkdir(__dirname + '/backup', function(errorHandle) {
+				
+			});
+			
 			Node.fsHandle.mkdir(__dirname + '/submission', function(errorHandle) {
 				
 			});
@@ -2414,4 +2420,38 @@ Sqlite.init();
 	};
 	
 	setTimeout(functionDirectories, 1000);
+}
+
+{
+	var functionBackup = function() {
+		var strBackup = '';
+		
+		{
+			var intYear = new Date().getFullYear();
+			var intMonth = new Date().getMonth() + 1;
+			var intDay = new Date().getDate();
+			var intHour = new Date().getHours();
+			
+			if (RateConf.strDatabaseBackups === 'daily') {
+				strBackup = 'backup-' + ('0000' + intYear).slice(-4) + '.' + ('00' + intMonth).slice(-2) + '.' + ('00' + intDay).slice(-2) + '.sqlite';
+				
+			} else if (RateConf.strDatabaseBackups === 'hourly') {
+				strBackup = 'backup-' + ('0000' + intYear).slice(-4) + '.' + ('00' + intMonth).slice(-2) + '.' + ('00' + intDay).slice(-2) + '-' + ('00' + intHour).slice(-2) + ':00:00.sqlite';
+				
+			}
+		}
+		
+		{
+			if (strBackup !== '') {
+				Node.fsHandle.stat(__dirname + '/backup/' + strBackup, function(errorHandle, statHandle) {
+					if (statHandle === undefined) {
+						Node.fsHandle.createReadStream(__dirname + '/database.sqlite').pipe(Node.fsHandle.createWriteStream(__dirname + '/backup/' + strBackup));
+					}
+				});
+			}
+		}
+	};
+	
+	setTimeout(functionBackup, 60 * 1000);
+	setInterval(functionBackup, 10 * 60 * 1000);
 }
