@@ -26,12 +26,19 @@ var Casable = {
 		{
 			var strData = Node.fsHandle.readFileSync(__dirname + '/node_modules/casable/lib/casable.js').toString();
 			
-			strData = strData.replace(new RegExp('auth\\[\'cas:name\'\\]\\[0\\]', 'g'), 'undefined');
-			strData = strData.replace(new RegExp('auth\\[\'cas:surname\'\\]\\[0\\]', 'g'), 'undefined');
-			strData = strData.replace(new RegExp('auth\\[\'cas:email\'\\]\\[0\\]', 'g'), 'undefined');
-			strData = strData.replace(new RegExp('auth\\[\'cas:salt\'\\]\\[0\\]', 'g'), 'undefined');
-			strData = strData.replace(new RegExp('auth\\[\'cas:passwordHash\'\\]\\[0\\]', 'g'), 'undefined');
-			strData = strData.replace(new RegExp('auth\\[\'cas:group\'\\]\\[0\\]', 'g'), 'undefined');
+			{
+				strData = strData.replace(new RegExp('auth\\[\'cas:name\'\\]\\[0\\]', 'g'), 'undefined');
+				
+				strData = strData.replace(new RegExp('auth\\[\'cas:surname\'\\]\\[0\\]', 'g'), 'undefined');
+				
+				strData = strData.replace(new RegExp('auth\\[\'cas:email\'\\]\\[0\\]', 'g'), 'undefined');
+				
+				strData = strData.replace(new RegExp('auth\\[\'cas:salt\'\\]\\[0\\]', 'g'), 'undefined');
+				
+				strData = strData.replace(new RegExp('auth\\[\'cas:passwordHash\'\\]\\[0\\]', 'g'), 'undefined');
+				
+				strData = strData.replace(new RegExp('auth\\[\'cas:group\'\\]\\[0\\]', 'g'), 'undefined');
+			}
 			
 			Node.fsHandle.writeFileSync(__dirname + '/node_modules/casable/lib/casable.js', strData);
 		}
@@ -498,7 +505,7 @@ Sqlite.init();
 			Sqlite.clientHandle.serialize(function() {
 				{
 					var strQuery = '';
-
+					
 					strQuery += 'SELECT submissionHandle.intIdent AS submissionHandle_intIdent,';
 					strQuery += '       submissionHandle.intTimestamp AS submissionHandle_intTimestamp,';
 					strQuery += '       submissionHandle.intAssignment AS submissionHandle_intAssignment,';
@@ -522,7 +529,7 @@ Sqlite.init();
 					strQuery += '   AND :intTimestamp > assignmentHandle.intTimestamp';
 					strQuery += '   AND studentHandle.strName = :studentHandle_strName';
 					strQuery += ' ORDER BY assignmentHandle.intIdent DESC;';
-		
+					
 					Sqlite.clientHandle.all(strQuery, {
 						':intTimestamp': new Date().getTime() / 1000,
 						':studentHandle_strName': requestHandle.query.strUser
@@ -670,7 +677,7 @@ Sqlite.init();
 						
 						return;
 					}
-
+					
 					{
 						Node.fsHandle.writeFile(__dirname + '/submission/' + FilesystemMove_strName, bufferHandle, function(errorHandle) {
 							if (errorHandle !== null) {
@@ -678,7 +685,7 @@ Sqlite.init();
 								
 								return;
 							}
-
+							
 							{
 								Node.fsHandle.unlink(requestHandle.file.path, function() {
 									if (errorHandle !== null) {
@@ -686,11 +693,11 @@ Sqlite.init();
 										
 										return;
 									}
-
+									
 									functionSqliteValidate();
-						        });
+								});
 							}
-					    });
+						});
 					}
 				}); 
 			}
@@ -737,12 +744,12 @@ Sqlite.init();
 						{
 							if (rowHandle === undefined) {
 								functionError();
-
+								
 								return;
 							
 							} else if (rowHandle.length === 0) {
 								functionError();
-
+								
 								return;
 								
 							}
@@ -753,7 +760,7 @@ Sqlite.init();
 				}
 			});
 		};
-
+		
 		var functionSqliteSubmission = function() {
 			Sqlite.clientHandle.serialize(function() {
 				{
@@ -767,7 +774,7 @@ Sqlite.init();
 					strQuery += '             FROM studentHandle';
 					strQuery += '            WHERE studentHandle.strName = :studentHandle_strName';
 					strQuery += '       );';
-		
+					
 					Sqlite.clientHandle.run(strQuery, {
 						':submissionHandle_strFile': FilesystemMove_strName,
 						':submissionHandle_intIdent': requestHandle.query.intSubmission,
@@ -882,7 +889,7 @@ Sqlite.init();
 			Sqlite.clientHandle.serialize(function() {
 				{
 					var strQuery = '';
-
+					
 					strQuery += 'SELECT evaluationHandle.intIdent AS evaluationHandle_intIdent,';
 					strQuery += '       evaluationHandle.intTimestamp AS evaluationHandle_intTimestamp,';
 					strQuery += '       evaluationHandle.intSubmission AS evaluationHandle_intSubmission,';
@@ -926,7 +933,7 @@ Sqlite.init();
 						
 						for (var intFor1 = 0; intFor1 < rowsHandle.length; intFor1 += 1) {
 							var rowHandle = rowsHandle[intFor1];
-
+							
 							{
 								var intSearch = -1;
 								
@@ -940,7 +947,7 @@ Sqlite.init();
 								
 								if (intSearch === -1) {
 									Mustache_objectHandle.assignmentHandle.push(rowHandle);
-
+									
 									Mustache_objectHandle.assignmentHandle[Mustache_objectHandle.assignmentHandle.length - 1].evaluationOutgoing = [];
 									Mustache_objectHandle.assignmentHandle[Mustache_objectHandle.assignmentHandle.length - 1].evaluationIncoming = [];
 								}
@@ -967,7 +974,7 @@ Sqlite.init();
 				
 				{
 					var strQuery = '';
-
+					
 					strQuery += 'SELECT evaluationHandle.intIdent AS evaluationHandle_intIdent,';
 					strQuery += '       evaluationHandle.intTimestamp AS evaluationHandle_intTimestamp,';
 					strQuery += '       evaluationHandle.intSubmission AS evaluationHandle_intSubmission,';
@@ -997,10 +1004,10 @@ Sqlite.init();
 					strQuery += ' WHERE evaluationHandle.intSubmission = submissionHandle.intIdent';
 					strQuery += '   AND submissionHandle.intAssignment = assignmentHandle.intIdent';
 					strQuery += '   AND submissionHandle.intStudent = studentHandle.intIdent';
-					strQuery += '   AND max(assignmentHandle.intEvaluate, evaluationHandle.intExtension) < :intTimestamp';
+					strQuery += '   AND assignmentHandle.intEvaluate < :intTimestamp';
 					strQuery += '   AND studentHandle.strName = :studentHandle_strName';
 					strQuery += ' ORDER BY assignmentHandle.intIdent DESC;';
-		
+					
 					Sqlite.clientHandle.all(strQuery, {
 						':intTimestamp': new Date().getTime() / 1000,
 						':studentHandle_strName': requestHandle.query.strUser
@@ -1022,7 +1029,7 @@ Sqlite.init();
 										break;
 									}
 								}
-
+								
 								if (intSearch !== -1) {
 									Mustache_objectHandle.assignmentHandle[intSearch].evaluationIncoming.push(rowHandle);
 								}
@@ -1033,8 +1040,15 @@ Sqlite.init();
 				
 				{
 					var strQuery = '';
-
-					strQuery += 'SELECT submissionHandle.intIdent AS submissionHandle_intIdent,';
+					
+					strQuery += 'SELECT evaluationHandle.intIdent AS evaluationHandle_intIdent,';
+					strQuery += '       evaluationHandle.intTimestamp AS evaluationHandle_intTimestamp,';
+					strQuery += '       evaluationHandle.intSubmission AS evaluationHandle_intSubmission,';
+					strQuery += '       evaluationHandle.intStudent AS evaluationHandle_intStudent,';
+					strQuery += '       evaluationHandle.intPoints AS evaluationHandle_intPoints,';
+					strQuery += '       evaluationHandle.strFile AS evaluationHandle_strFile,';
+					strQuery += '       evaluationHandle.intExtension AS evaluationHandle_intExtension,';
+					strQuery += '       submissionHandle.intIdent AS submissionHandle_intIdent,';
 					strQuery += '       submissionHandle.intTimestamp AS submissionHandle_intTimestamp,';
 					strQuery += '       submissionHandle.intAssignment AS submissionHandle_intAssignment,';
 					strQuery += '       submissionHandle.intStudent AS submissionHandle_intStudent,';
@@ -1049,17 +1063,20 @@ Sqlite.init();
 					strQuery += '       studentHandle.intTimestamp AS studentHandle_intTimestamp,';
 					strQuery += '       studentHandle.strName AS studentHandle_strName,';
 					strQuery += '       studentHandle.strMail AS studentHandle_strMail';
-					strQuery += '  FROM submissionHandle,';
+					strQuery += '  FROM evaluationHandle,';
+					strQuery += '       submissionHandle,';
 					strQuery += '       assignmentHandle,';
 					strQuery += '       studentHandle';
-					strQuery += ' WHERE submissionHandle.intAssignment = assignmentHandle.intIdent';
-					strQuery += '   AND submissionHandle.intStudent = studentHandle.intIdent';
-					strQuery += '   AND submissionHandle.strFile == :submissionHandle_strFile';
+					strQuery += ' WHERE evaluationHandle.intSubmission = submissionHandle.intIdent';
+					strQuery += '   AND evaluationHandle.intStudent = studentHandle.intIdent';
+					strQuery += '   AND evaluationHandle.intExtension > :intTimestamp';
+					strQuery += '   AND submissionHandle.intAssignment = assignmentHandle.intIdent';
+					strQuery += '   AND assignmentHandle.intSubmit < :intTimestamp';
 					strQuery += '   AND studentHandle.strName = :studentHandle_strName';
 					strQuery += ' ORDER BY assignmentHandle.intIdent DESC;';
-		
+					
 					Sqlite.clientHandle.all(strQuery, {
-						':submissionHandle_strFile': 'Unknown',
+						':intTimestamp': new Date().getTime() / 1000,
 						':studentHandle_strName': requestHandle.query.strUser
 					}, function(errorHandle, rowsHandle) {
 						if (errorHandle !== null) {
@@ -1081,8 +1098,7 @@ Sqlite.init();
 								}
 								
 								if (intSearch !== -1) {
-									// Mustache_objectHandle.assignmentHandle[intSearch].evaluationOutgoing = [];
-									// Mustache_objectHandle.assignmentHandle[intSearch].evaluationIncoming = [];
+									Mustache_objectHandle.assignmentHandle[intSearch].evaluationIncoming = [];
 								}
 							}
 						}
@@ -1272,12 +1288,12 @@ Sqlite.init();
 						{
 							if (rowHandle === undefined) {
 								functionError();
-
+								
 								return;
 							
 							} else if (rowHandle.length === 0) {
 								functionError();
-
+								
 								return;
 								
 							}
@@ -1288,7 +1304,7 @@ Sqlite.init();
 				}
 			});
 		};
-
+		
 		var functionSqliteEvaluation = function() {
 			Sqlite.clientHandle.serialize(function() {
 				{
@@ -1302,7 +1318,7 @@ Sqlite.init();
 					strQuery += '             FROM studentHandle';
 					strQuery += '            WHERE studentHandle.strName = :studentHandle_strName';
 					strQuery += '       );';
-		
+					
 					Sqlite.clientHandle.run(strQuery, {
 						':evaluationHandle_intPoints': requestHandle.query.intPoints,
 						':evaluationHandle_intIdent': requestHandle.query.intEvaluation,
@@ -1440,7 +1456,7 @@ Sqlite.init();
 						
 						return;
 					}
-
+					
 					{
 						Node.fsHandle.writeFile(__dirname + '/evaluation/' + FilesystemMove_strName, bufferHandle, function(errorHandle) {
 							if (errorHandle !== null) {
@@ -1448,7 +1464,7 @@ Sqlite.init();
 								
 								return;
 							}
-
+							
 							{
 								Node.fsHandle.unlink(requestHandle.file.path, function() {
 									if (errorHandle !== null) {
@@ -1456,13 +1472,13 @@ Sqlite.init();
 										
 										return;
 									}
-
+									
 									functionSqliteValidate();
-						        });
+								});
 							}
-					    });
+						});
 					}
-				}); 
+				});
 			}
 		};
 		
@@ -1518,12 +1534,12 @@ Sqlite.init();
 						{
 							if (rowHandle === undefined) {
 								functionError();
-
+								
 								return;
 							
 							} else if (rowHandle.length === 0) {
 								functionError();
-
+								
 								return;
 								
 							}
@@ -1534,7 +1550,7 @@ Sqlite.init();
 				}
 			});
 		};
-
+		
 		var functionSqliteEvaluation = function() {
 			Sqlite.clientHandle.serialize(function() {
 				{
@@ -1724,6 +1740,7 @@ Sqlite.init();
 	var Config_objectMessages = [];
 	var Config_objectStudents = [];
 	var Config_objectAssignments = [];
+	var Config_objectExtensions = [];
 	
 	var functionConfig = function() {
 		{
@@ -1801,6 +1818,34 @@ Sqlite.init();
 						'intSubmit': parseInt(strSplit[1].trim(), 10),
 						'intEvaluate': parseInt(strSplit[2].trim(), 10),
 						'intCrossgrading': parseInt(strSplit[3].trim(), 10)
+					});
+				}
+			}
+		}
+		
+		{
+			var strData = Node.fsHandle.readFileSync(__dirname + '/config-extensions.txt').toString().split('\n');
+			
+			for (var intFor1 = 0; intFor1 < strData.length; intFor1 += 1) {
+				var strSplit = strData[intFor1].split(';');
+				
+				if (strSplit.length < 4) {
+					continue;
+					
+				} else if (strSplit[0].trim() === '') {
+					continue;
+					
+				} else if (strSplit[0].indexOf('//') !== -1) {
+					continue;
+					
+				}
+				
+				{
+					Config_objectExtensions.push({
+						'strAssignment': strSplit[0].trim(),
+						'strStudent': strSplit[1].trim(),
+						'intSubmit': parseInt(strSplit[2].trim(), 10),
+						'intEvaluate': parseInt(strSplit[3].trim(), 10)
 					});
 				}
 			}
@@ -2114,192 +2159,258 @@ Sqlite.init();
 				});
 			}
 		});
-		
-		var functionAssignmentsUpdate = function() {
-			Sqlite.clientHandle.serialize(function() {
-				{
-					for (var intFor1 = 0; intFor1 < Config_objectAssignments.length; intFor1 += 1) {
-						if (Config_objectAssignments[intFor1].boolExisting === true) {
-							continue;
-						}
+	};
+	
+	var functionAssignmentsUpdate = function() {
+		Sqlite.clientHandle.serialize(function() {
+			{
+				for (var intFor1 = 0; intFor1 < Config_objectAssignments.length; intFor1 += 1) {
+					if (Config_objectAssignments[intFor1].boolExisting === true) {
+						continue;
+					}
+					
+					{
+						var strQuery = '';
 						
-						{
-							var strQuery = '';
+						strQuery += 'INSERT INTO assignmentHandle (';
+						strQuery += '    strName,';
+						strQuery += '    intSubmit,';
+						strQuery += '    intEvaluate';
+						strQuery += ') VALUES (';
+						strQuery += '    :assignmentHandle_strName,';
+						strQuery += '    :assignmentHandle_intSubmit,';
+						strQuery += '    :assignmentHandle_intEvaluate';
+						strQuery += ');';
+						
+						Sqlite.clientHandle.run(strQuery, {
+							':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
+							':assignmentHandle_intSubmit': Config_objectAssignments[intFor1].intSubmit,
+							':assignmentHandle_intEvaluate': Config_objectAssignments[intFor1].intEvaluate
+						}, function(errorHandle) {
 							
-							strQuery += 'INSERT INTO assignmentHandle (';
-							strQuery += '    strName,';
-							strQuery += '    intSubmit,';
-							strQuery += '    intEvaluate';
-							strQuery += ') VALUES (';
-							strQuery += '    :assignmentHandle_strName,';
-							strQuery += '    :assignmentHandle_intSubmit,';
-							strQuery += '    :assignmentHandle_intEvaluate';
-							strQuery += ');';
-							
-							Sqlite.clientHandle.run(strQuery, {
-								':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
-								':assignmentHandle_intSubmit': Config_objectAssignments[intFor1].intSubmit,
-								':assignmentHandle_intEvaluate': Config_objectAssignments[intFor1].intEvaluate
-							}, function(errorHandle) {
+						});
+					}
+					
+					{
+						for (var intFor2 = 0; intFor2 < Config_objectStudents.length; intFor2 += 1) {
+							{
+								var strQuery = '';
 								
-							});
+								strQuery += 'INSERT INTO submissionHandle (';
+								strQuery += '    intAssignment,';
+								strQuery += '    intStudent,';
+								strQuery += '    strFile,';
+								strQuery += '    intExtension';
+								strQuery += ')';
+								strQuery += 'SELECT assignmentHandle.intIdent AS submissionHandle_intAssignment,';
+								strQuery += '       studentHandle.intIdent AS submissionHandle_intStudent,';
+								strQuery += '       :submissionHandle_strFile AS submissionHandle_strFile,';
+								strQuery += '       :submissionHandle_intExtension AS submissionHandle_intExtension';
+								strQuery += '  FROM assignmentHandle,';
+								strQuery += '       studentHandle';
+								strQuery += ' WHERE assignmentHandle.strName = :assignmentHandle_strName';
+								strQuery += '   AND studentHandle.strName = :studentHandle_strName;';
+								
+								Sqlite.clientHandle.run(strQuery, {
+									':submissionHandle_strFile': 'Unknown',
+									':submissionHandle_intExtension': 0,
+									':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
+									':studentHandle_strName': Config_objectStudents[intFor2].strName
+								}, function(errorHandle) {
+									
+								});
+							}
 						}
-						
-						{
-							for (var intFor2 = 0; intFor2 < Config_objectStudents.length; intFor2 += 1) {
+					}
+					
+					{
+						for (var intFor2 = 0; intFor2 < Config_objectStudents.length; intFor2 += 1) {
+							{
+								Config_objectStudents[intFor2].strCrossgrading = new Array(Config_objectAssignments[intFor1].intCrossgrading);
+							}
+						}
+					}
+					
+					{
+						for (var intFor2 = 0; intFor2 < Config_objectAssignments[intFor1].intCrossgrading; intFor2 += 1) {
+							do {
+								var boolCrossgrading = true;
+								
+								{
+									for (var intFor3 = 0; intFor3 < Config_objectStudents.length; intFor3 += 1) {
+										Config_objectStudents[intFor3].strCrossgrading[intFor2] = Config_objectStudents[intFor3].strName;
+									}
+								}
+								
+								{
+									for (var intFor3 = Config_objectStudents.length; intFor3 > 1; intFor3 -= 1) {
+										var intRandom = Math.floor(Math.random() * 15485867) % intFor3;
+										
+										if (intFor3 == intRandom) {
+											continue;
+										}
+										
+										var strSwap = Config_objectStudents[intFor3 - 1].strCrossgrading[intFor2];
+										Config_objectStudents[intFor3 - 1].strCrossgrading[intFor2] = Config_objectStudents[intRandom].strCrossgrading[intFor2];
+										Config_objectStudents[intRandom].strCrossgrading[intFor2] = strSwap;
+									}
+								}
+								
+								{
+									for (var intFor3 = 0; intFor3 < Config_objectStudents.length; intFor3 += 1) {
+										if (Config_objectStudents[intFor3].strName === Config_objectStudents[intFor3].strCrossgrading[intFor2]) {
+											boolCrossgrading = false;
+											
+										} else if (Config_objectStudents[intFor3].strCrossgrading.indexOf(Config_objectStudents[intFor3].strCrossgrading[intFor2]) !== intFor2) {
+											boolCrossgrading = false;
+											
+										}
+									}
+								}
+								
+								if (boolCrossgrading === true) {
+									break;
+								}
+							} while (true);
+						}
+					}
+					
+					{
+						for (var intFor2 = 0; intFor2 < Config_objectStudents.length; intFor2 += 1) {
+							for (var intFor3 = 0; intFor3 < Config_objectAssignments[intFor1].intCrossgrading; intFor3 += 1) {
 								{
 									var strQuery = '';
 									
-									strQuery += 'INSERT INTO submissionHandle (';
-									strQuery += '    intAssignment,';
+									strQuery += 'INSERT INTO evaluationHandle (';
+									strQuery += '    intSubmission,';
 									strQuery += '    intStudent,';
+									strQuery += '    intPoints,';
 									strQuery += '    strFile,';
 									strQuery += '    intExtension';
 									strQuery += ')';
-									strQuery += 'SELECT assignmentHandle.intIdent AS submissionHandle_intAssignment,';
-									strQuery += '       studentHandle.intIdent AS submissionHandle_intStudent,';
-									strQuery += '       :submissionHandle_strFile AS submissionHandle_strFile,';
-									strQuery += '       :submissionHandle_intExtension AS submissionHandle_intExtension';
-									strQuery += '  FROM assignmentHandle,';
-									strQuery += '       studentHandle';
-									strQuery += ' WHERE assignmentHandle.strName = :assignmentHandle_strName';
-									strQuery += '   AND studentHandle.strName = :studentHandle_strName;';
+									strQuery += 'SELECT submissionHandle.intIdent AS evaluationHandle_intSubmission,';
+									strQuery += '       studentEvaluation.intIdent AS evaluationHandle_intStudent,';
+									strQuery += '       :evaluationHandle_intPoints AS evaluationHandle_intPoints,';
+									strQuery += '       :evaluationHandle_strFile AS evaluationHandle_strFile,';
+									strQuery += '       :evaluationHandle_intExtension AS evaluationHandle_intExtension';
+									strQuery += '  FROM submissionHandle,';
+									strQuery += '       assignmentHandle,';
+									strQuery += '       studentHandle AS studentSubmission,';
+									strQuery += '       studentHandle AS studentEvaluation';
+									strQuery += ' WHERE submissionHandle.intAssignment = assignmentHandle.intIdent';
+									strQuery += '   AND submissionHandle.intStudent = studentSubmission.intIdent';
+									strQuery += '   AND assignmentHandle.strName = :assignmentHandle_strName';
+									strQuery += '   AND studentSubmission.strName = :studentSubmission_strName';
+									strQuery += '   AND studentEvaluation.strName = :studentEvaluation_strName;';
 									
 									Sqlite.clientHandle.run(strQuery, {
-										':submissionHandle_strFile': 'Unknown',
-										':submissionHandle_intExtension': 0,
+										':evaluationHandle_intPoints': 0,
+										':evaluationHandle_strFile': 'Unknown',
+										':evaluationHandle_intExtension': 0,
 										':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
-										':studentHandle_strName': Config_objectStudents[intFor2].strName
+										':studentSubmission_strName': Config_objectStudents[intFor2].strName,
+										':studentEvaluation_strName': Config_objectStudents[intFor2].strCrossgrading[intFor3]
 									}, function(errorHandle) {
 										
 									});
 								}
 							}
 						}
-						
-						{
-							for (var intFor2 = 0; intFor2 < Config_objectStudents.length; intFor2 += 1) {
-								{
-									Config_objectStudents[intFor2].strCrossgrading = new Array(Config_objectAssignments[intFor1].intCrossgrading);
-								}
-							}
-						}
-						
-						{
-							for (var intFor2 = 0; intFor2 < Config_objectAssignments[intFor1].intCrossgrading; intFor2 += 1) {
-								do {
-									var boolCrossgrading = true;
-									
-									{
-										for (var intFor3 = 0; intFor3 < Config_objectStudents.length; intFor3 += 1) {
-											Config_objectStudents[intFor3].strCrossgrading[intFor2] = Config_objectStudents[intFor3].strName;
-										}
-									}
-									
-									{
-										for (var intFor3 = Config_objectStudents.length; intFor3 > 1; intFor3 -= 1) {
-											var intRandom = Math.floor(Math.random() * 15485867) % intFor3;
-											
-											if (intFor3 == intRandom) {
-												continue;
-											}
-											
-											var strSwap = Config_objectStudents[intFor3 - 1].strCrossgrading[intFor2];
-											Config_objectStudents[intFor3 - 1].strCrossgrading[intFor2] = Config_objectStudents[intRandom].strCrossgrading[intFor2];
-											Config_objectStudents[intRandom].strCrossgrading[intFor2] = strSwap;
-										}
-									}
-									
-									{
-										for (var intFor3 = 0; intFor3 < Config_objectStudents.length; intFor3 += 1) {
-											if (Config_objectStudents[intFor3].strName === Config_objectStudents[intFor3].strCrossgrading[intFor2]) {
-												boolCrossgrading = false;
-												
-											} else if (Config_objectStudents[intFor3].strCrossgrading.indexOf(Config_objectStudents[intFor3].strCrossgrading[intFor2]) !== intFor2) {
-												boolCrossgrading = false;
-												
-											}
-										}
-									}
-									
-									if (boolCrossgrading === true) {
-										break;
-									}
-								} while (true);
-							}
-						}
-						
-						{
-							for (var intFor2 = 0; intFor2 < Config_objectStudents.length; intFor2 += 1) {
-								for (var intFor3 = 0; intFor3 < Config_objectAssignments[intFor1].intCrossgrading; intFor3 += 1) {
-									{
-										var strQuery = '';
-										
-										strQuery += 'INSERT INTO evaluationHandle (';
-										strQuery += '    intSubmission,';
-										strQuery += '    intStudent,';
-										strQuery += '    intPoints,';
-										strQuery += '    strFile,';
-										strQuery += '    intExtension';
-										strQuery += ')';
-										strQuery += 'SELECT submissionHandle.intIdent AS evaluationHandle_intSubmission,';
-										strQuery += '       studentEvaluation.intIdent AS evaluationHandle_intStudent,';
-										strQuery += '       :evaluationHandle_intPoints AS evaluationHandle_intPoints,';
-										strQuery += '       :evaluationHandle_strFile AS evaluationHandle_strFile,';
-										strQuery += '       :evaluationHandle_intExtension AS evaluationHandle_intExtension';
-										strQuery += '  FROM assignmentHandle,';
-										strQuery += '       submissionHandle,';
-										strQuery += '       studentHandle AS studentSubmission,';
-										strQuery += '       studentHandle AS studentEvaluation';
-										strQuery += ' WHERE assignmentHandle.strName = :assignmentHandle_strName';
-										strQuery += '   AND submissionHandle.intAssignment = assignmentHandle.intIdent';
-										strQuery += '   AND submissionHandle.intStudent = studentSubmission.intIdent';
-										strQuery += '   AND studentSubmission.strName = :studentSubmission_strName';
-										strQuery += '   AND studentEvaluation.strName = :studentEvaluation_strName;';
-										
-										Sqlite.clientHandle.run(strQuery, {
-											':evaluationHandle_intPoints': 0,
-											':evaluationHandle_strFile': 'Unknown',
-											':evaluationHandle_intExtension': 0,
-											':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
-											':studentSubmission_strName': Config_objectStudents[intFor2].strName,
-											':studentEvaluation_strName': Config_objectStudents[intFor2].strCrossgrading[intFor3]
-										}, function(errorHandle) {
-											
-										});
-									}
-								}
-							}
-						}
 					}
 				}
-				
-				{
-					for (var intFor1 = 0; intFor1 < Config_objectAssignments.length; intFor1 += 1) {
-						if (Config_objectAssignments[intFor1].boolExisting === false) {
-							continue;
-						}
+			}
+			
+			{
+				for (var intFor1 = 0; intFor1 < Config_objectAssignments.length; intFor1 += 1) {
+					if (Config_objectAssignments[intFor1].boolExisting === false) {
+						continue;
+					}
+					
+					{
+						var strQuery = '';
 						
-						{
-							var strQuery = '';
+						strQuery += 'UPDATE assignmentHandle';
+						strQuery += '   SET intSubmit = :assignmentHandle_intSubmit,';
+						strQuery += '       intEvaluate = :assignmentHandle_intEvaluate';
+						strQuery += ' WHERE assignmentHandle.strName = :assignmentHandle_strName';
+						
+						Sqlite.clientHandle.run(strQuery, {
+							':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
+							':assignmentHandle_intSubmit': Config_objectAssignments[intFor1].intSubmit,
+							':assignmentHandle_intEvaluate': Config_objectAssignments[intFor1].intEvaluate
+						}, function(errorHandle) {
 							
-							strQuery += 'UPDATE assignmentHandle';
-							strQuery += '   SET intSubmit = :assignmentHandle_intSubmit,';
-							strQuery += '   SET intEvaluate = :assignmentHandle_intEvaluate';
-							strQuery += ' WHERE assignmentHandle.strName = :assignmentHandle_strName';
-							
-							Sqlite.clientHandle.run(strQuery, {
-								':assignmentHandle_strName': Config_objectAssignments[intFor1].strName,
-								':assignmentHandle_intSubmit': Config_objectAssignments[intFor1].intSubmit,
-								':assignmentHandle_intEvaluate': Config_objectAssignments[intFor1].intEvaluate
-							}, function(errorHandle) {
-								
-							});
-						}
+						});
 					}
 				}
-			});
-		};
+			}
+			
+			{
+				Sqlite.clientHandle.run('', function(errorHandle) {
+					functionExtensionsUpdate();
+				});
+			}
+		});
+	};
+	
+	var functionExtensionsUpdate = function() {
+		Sqlite.clientHandle.serialize(function() {
+			{
+				for (var intFor1 = 0; intFor1 < Config_objectExtensions.length; intFor1 += 1) {
+					{
+						var strQuery = '';
+						
+						strQuery += 'UPDATE submissionHandle';
+						strQuery += '   SET intExtension = :submissionHandle_intExtension';
+						strQuery += ' WHERE submissionHandle.intAssignment IN (';
+						strQuery += '           SELECT assignmentHandle.intIdent AS assignmentHandle_intIdent';
+						strQuery += '             FROM assignmentHandle';
+						strQuery += '            WHERE assignmentHandle.strName = :assignmentHandle_strName';
+						strQuery += '       )';
+						strQuery += '   AND submissionHandle.intStudent IN (';
+						strQuery += '           SELECT studentHandle.intIdent AS studentHandle_intIdent';
+						strQuery += '             FROM studentHandle';
+						strQuery += '            WHERE studentHandle.strName = :studentHandle_strName';
+						strQuery += '       );';
+						
+						Sqlite.clientHandle.run(strQuery, {
+							':submissionHandle_intExtension': Config_objectExtensions[intFor1].intSubmit,
+							':assignmentHandle_strName': Config_objectExtensions[intFor1].strAssignment,
+							':studentHandle_strName': Config_objectExtensions[intFor1].strStudent
+						}, function(errorHandle) {
+							
+						});
+					}
+					
+					{
+						var strQuery = '';
+						
+						strQuery += 'UPDATE evaluationHandle';
+						strQuery += '   SET intExtension = :evaluationHandle_intExtension';
+						strQuery += ' WHERE evaluationHandle.intSubmission IN (';
+						strQuery += '           SELECT submissionHandle.intIdent AS submissionHandle_intIdent';
+						strQuery += '             FROM submissionHandle,';
+						strQuery += '                  assignmentHandle';
+						strQuery += '            WHERE submissionHandle.intAssignment = assignmentHandle.intIdent';
+						strQuery += '              AND assignmentHandle.strName = :assignmentHandle_strName';
+						strQuery += '       )';
+						strQuery += '   AND evaluationHandle.intStudent IN (';
+						strQuery += '           SELECT studentHandle.intIdent AS studentHandle_intIdent';
+						strQuery += '             FROM studentHandle';
+						strQuery += '            WHERE studentHandle.strName = :studentHandle_strName';
+						strQuery += '       );';
+						
+						Sqlite.clientHandle.run(strQuery, {
+							':evaluationHandle_intExtension': Config_objectExtensions[intFor1].intEvaluate,
+							':assignmentHandle_strName': Config_objectExtensions[intFor1].strAssignment,
+							':studentHandle_strName': Config_objectExtensions[intFor1].strStudent
+						}, function(errorHandle) {
+							
+						});
+					}
+				}
+			}
+		});
 	};
 	
 	setTimeout(functionDirectories, 1000);

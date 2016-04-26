@@ -1,0 +1,6 @@
+// list the assignment name, the student name, the extended submission deadline (epoch in seconds), the extended evaluation deadline (epoch in seconds) for each student
+// should you want to extend only one deadline, simply set the other deadline to zero - should you want to undo a deadline exception, simply set the deadline in question to zero
+// the epoch time can be retrieved from www.epochconverter.com - remember to use the local time instead of greenwich mean time
+
+assignment 1;holzknecht;1461646800;0;
+assignment 2;becker;1461819600;1461906000;
