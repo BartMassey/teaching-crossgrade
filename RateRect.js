@@ -326,135 +326,6 @@ Sqlite.init();
 		functionPreprocess();
 	});
 	
-	Express.serverHandle.get('/indexMessages.html', Casable.clientHandle, function(requestHandle, responseHandle) {
-		var Mustache_objectHandle = {
-			'objectMain': {
-				'strRandom': Node.hashbase(Node.cryptoHandle.randomBytes(64)).substr(0, 32)
-			},
-			'messageHandle': []
-		};
-		
-		var functionPreprocess = function() {
-			{
-				if (Casable.isLogin(requestHandle) === false) {
-					functionError();
-					
-					return;
-				}
-			}
-			
-			{
-				if (requestHandle.query.strUser === undefined) {
-					requestHandle.query.strUser = requestHandle.authenticatedUser.id;
-					
-				} else if (Casable.isAdmin(requestHandle) === false) {
-					requestHandle.query.strUser = requestHandle.authenticatedUser.id;
-					
-				}
-			}
-			
-			functionFilesystemRead();
-		};
-		
-		var FilesystemRead_bufferHandle = null;
-		
-		var functionFilesystemRead = function() {
-			Node.fsHandle.readFile(__dirname + '/assets/indexMessages.html', function(errorHandle, bufferHandle) {
-				if (errorHandle !== null) {
-					functionError();
-					
-					return;
-				}
-				
-				{
-					FilesystemRead_bufferHandle = bufferHandle;
-				}
-				
-				functionSqliteMessage();
-			});
-		};
-		
-		var functionSqliteMessage = function() {
-			Sqlite.clientHandle.serialize(function() {
-				{
-					var strQuery = '';
-					
-					strQuery += 'SELECT messageHandle.intIdent AS messageHandle_intIdent,';
-					strQuery += '       messageHandle.intTimestamp AS messageHandle_intTimestamp,';
-					strQuery += '       messageHandle.strTitle AS messageHandle_strTitle,';
-					strQuery += '       messageHandle.strText AS messageHandle_strText';
-					strQuery += '  FROM messageHandle';
-					strQuery += ' ORDER BY messageHandle.intIdent DESC;';
-					
-					Sqlite.clientHandle.all(strQuery, function(errorHandle, rowsHandle) {
-						if (errorHandle !== null) {
-							return;
-						}
-						
-						for (var intFor1 = 0; intFor1 < rowsHandle.length; intFor1 += 1) {
-							var rowHandle = rowsHandle[intFor1];
-							
-							{
-								Mustache_objectHandle.messageHandle.push(rowHandle);
-							}
-						}
-					});
-				}
-				
-				{
-					Sqlite.clientHandle.run('', function(errorHandle) {
-						functionSuccess();
-					});
-				}
-			});
-		};
-		
-		var functionError = function() {
-			responseHandle.end();
-		};
-		
-		var functionSuccess = function() {
-			var strData = FilesystemRead_bufferHandle.toString();
-			
-			{
-				strData = Mustache.mustacheHandle.render(strData, Mustache_objectHandle);
-				
-				strData = Mustache.mustacheHandle.render(strData, Mustache_objectHandle);
-			}
-			
-			{
-				strData = Hypertextmin.hypertextminHandle.minify(strData, {
-					'removeComments': true,
-					'removeCommentsFromCDATA': true,
-					'removeCDATASectionsFromCDATA': false,
-					'collapseWhitespace': true,
-					'conservativeCollapse': true,
-					'collapseBooleanAttributes': false,
-					'removeAttributeQuotes': false,
-					'removeRedundantAttributes': false,
-					'useShortDoctype': false,
-					'removeEmptyAttributes': false,
-					'removeOptionalTags': false,
-					'removeEmptyElements': false
-				});
-			}
-			
-			responseHandle.status(200);
-			
-			responseHandle.set({
-				'Content-Length': Buffer.byteLength(strData, 'utf-8'),
-				'Content-Type': Mime.mimeHandle.lookup('html'),
-				'Content-Disposition': 'inline; filename="' + requestHandle.path.substr(requestHandle.path.lastIndexOf('/') + 1) + '";'
-			});
-			
-			responseHandle.write(strData);
-			
-			responseHandle.end();
-		};
-		
-		functionPreprocess();
-	});
-	
 	Express.serverHandle.get('/indexSubmissions.html', Casable.clientHandle, function(requestHandle, responseHandle) {
 		var Mustache_objectHandle = {
 			'objectMain': {
@@ -666,9 +537,9 @@ Sqlite.init();
 				FilesystemMove_strName += ' - ';
 				FilesystemMove_strName += Node.hashbase(Node.cryptoHandle.randomBytes(64)).substr(0, 8);
 				
-				if (requestHandle.file.path.indexOf('.') !== -1) {
+				if (requestHandle.file.originalname.indexOf('.') !== -1) {
 					FilesystemMove_strName += '.';
-					FilesystemMove_strName += requestHandle.file.path.split('.').pop();
+					FilesystemMove_strName += requestHandle.file.originalname.split('.').pop();
 				}
 			}
 			
@@ -1445,9 +1316,9 @@ Sqlite.init();
 				FilesystemMove_strName += ' - ';
 				FilesystemMove_strName += Node.hashbase(Node.cryptoHandle.randomBytes(64)).substr(0, 8);
 				
-				if (requestHandle.file.path.indexOf('.') !== -1) {
+				if (requestHandle.file.originalname.indexOf('.') !== -1) {
 					FilesystemMove_strName += '.';
-					FilesystemMove_strName += requestHandle.file.path.split('.').pop();
+					FilesystemMove_strName += requestHandle.file.originalname.split('.').pop();
 				}
 			}
 			
@@ -1662,20 +1533,6 @@ Sqlite.init();
 			{
 				var strQuery = '';
 				
-				strQuery += 'CREATE TABLE IF NOT EXISTS messageHandle (';
-				strQuery += '    intIdent INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,';
-				strQuery += '    intTimestamp INTEGER DEFAULT (strftime(\'%s\', \'now\')),';
-				strQuery += '    strTitle TEXT,';
-				strQuery += '    strText TEXT,';
-				strQuery += '    UNIQUE (strTitle) ON CONFLICT IGNORE';
-				strQuery += ');';
-				
-				Sqlite.clientHandle.run(strQuery);
-			}
-			
-			{
-				var strQuery = '';
-				
 				strQuery += 'CREATE TABLE IF NOT EXISTS studentHandle (';
 				strQuery += '    intIdent INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,';
 				strQuery += '    intTimestamp INTEGER DEFAULT (strftime(\'%s\', \'now\')),';
@@ -1743,38 +1600,11 @@ Sqlite.init();
 		});
 	};
 	
-	var Config_objectMessages = [];
 	var Config_objectStudents = [];
 	var Config_objectAssignments = [];
 	var Config_objectExtensions = [];
 	
 	var functionConfig = function() {
-		{
-			var strData = Node.fsHandle.readFileSync(__dirname + '/config-messages.txt').toString().split('\n');
-			
-			for (var intFor1 = 0; intFor1 < strData.length; intFor1 += 1) {
-				var strSplit = strData[intFor1].split(';');
-				
-				if (strSplit.length < 2) {
-					continue;
-					
-				} else if (strSplit[0].trim() === '') {
-					continue;
-					
-				} else if (strSplit[0].indexOf('//') !== -1) {
-					continue;
-					
-				}
-				
-				{
-					Config_objectMessages.push({
-						'strTitle': strSplit[0].trim(),
-						'strText': strSplit[1].trim()
-					});
-				}
-			}
-		}
-		
 		{
 			var strData = Node.fsHandle.readFileSync(__dirname + '/config-students.txt').toString().split('\n');
 			
@@ -1857,129 +1687,7 @@ Sqlite.init();
 			}
 		}
 		
-		functionMessagesLookup();
-	};
-	
-	var functionMessagesLookup = function() {
-		Sqlite.clientHandle.serialize(function() {
-			{
-				var strIn = [];
-				var strIdentifier = [];
-				
-				for (var intFor1 = 0; intFor1 < Config_objectMessages.length; intFor1 += 1) {
-					{
-						strIn.push('?');
-						
-						strIdentifier.push(Config_objectMessages[intFor1].strTitle);
-					}
-					
-					{
-						Config_objectMessages[intFor1].boolExisting = false;
-					}
-				}
-				
-				var strQuery = '';
-				
-				strQuery += 'SELECT messageHandle.intIdent AS messageHandle_intIdent,';
-				strQuery += '       messageHandle.intTimestamp AS messageHandle_intTimestamp,';
-				strQuery += '       messageHandle.strTitle AS messageHandle_strTitle,';
-				strQuery += '       messageHandle.strText AS messageHandle_strText';
-				strQuery += '  FROM messageHandle';
-				strQuery += ' WHERE messageHandle.strTitle IN (' + strIn.join(',') + ');';
-				
-				Sqlite.clientHandle.all(strQuery, strIdentifier, function(errorHandle, rowsHandle) {
-					if (errorHandle !== null) {
-						return;
-					}
-					
-					for (var intFor1 = 0; intFor1 < rowsHandle.length; intFor1 += 1) {
-						var rowHandle = rowsHandle[intFor1];
-						
-						{
-							var intSearch = -1;
-							
-							for (var intFor2 = 0; intFor2 < Config_objectMessages.length; intFor2 += 1) {
-								if (Config_objectMessages[intFor2].strTitle === rowHandle.messageHandle_strTitle) {
-									intSearch = intFor2;
-									
-									break;
-								}
-							}
-							
-							if (intSearch !== -1) {
-								Config_objectMessages[intSearch].boolExisting = true;
-							}
-						}
-					}
-				});
-			}
-			
-			{
-				Sqlite.clientHandle.run('', function(errorHandle) {
-					functionMessagesUpdate();
-				});
-			}
-		});
-	};
-	
-	var functionMessagesUpdate = function() {
-		Sqlite.clientHandle.serialize(function() {
-			{
-				for (var intFor1 = 0; intFor1 < Config_objectMessages.length; intFor1 += 1) {
-					if (Config_objectMessages[intFor1].boolExisting === true) {
-						continue;
-					}
-					
-					{
-						var strQuery = '';
-						
-						strQuery += 'INSERT INTO messageHandle (';
-						strQuery += '    strTitle,';
-						strQuery += '    strText';
-						strQuery += ') VALUES (';
-						strQuery += '    :messageHandle_strTitle,';
-						strQuery += '    :messageHandle_strText';
-						strQuery += ');';
-						
-						Sqlite.clientHandle.run(strQuery, {
-							':messageHandle_strTitle': Config_objectMessages[intFor1].strTitle,
-							':messageHandle_strText': Config_objectMessages[intFor1].strText
-						}, function(errorHandle) {
-							
-						});
-					}
-				}
-			}
-			
-			{
-				for (var intFor1 = 0; intFor1 < Config_objectMessages.length; intFor1 += 1) {
-					if (Config_objectMessages[intFor1].boolExisting === false) {
-						continue;
-					}
-					
-					{
-						var strQuery = '';
-						
-						strQuery += 'UPDATE messageHandle';
-						strQuery += '   SET strText = :messageHandle_strText';
-						strQuery += ' WHERE messageHandle.strTitle = :messageHandle_strTitle';
-						
-						Sqlite.clientHandle.run(strQuery, {
-							':messageHandle_strTitle': Config_objectMessages[intFor1].strTitle,
-							':messageHandle_strText': Config_objectMessages[intFor1].strText
-						}, function(errorHandle) {
-							
-						});
-					}
-				}
-			}
-			
-			{
-				Sqlite.clientHandle.run('', function(errorHandle) {
-					functionStudentsLookup();
-				});
-			}
-		});
+		functionStudentsLookup();
 	};
 	
 	var functionStudentsLookup = function() {

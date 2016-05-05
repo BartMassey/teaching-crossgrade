@@ -1,6 +1,8 @@
 #teaching-crossgrade
 this project allows assignments to be separated into two stages, a submission stage as well as a subsequent evaluation stage. in the submission stage, students upload their solutions to a given assignment. in the subsequent evaluation stage, students evaluate the submissions of their peers in order to study other solutions and to provide mutual anonymous feedback.
 
+<p align="center"><img src="http://content.coderect.com/RateRect/Teaching/ScreenshotThumb.png" alt="ScreenshotThumb"></p>
+
 ##installation
 make sure to have `node` and `npm` installed. otherwise navigate to [nodejs.org](https://nodejs.org/) in order to download the latest binaries.
 

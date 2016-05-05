@@ -1,133 +1,121 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>crossgrade.svcs.cs.pdx.edu</title>
-
-    <style type="text/css">
-		.bs-callout-info {
-		    background-color:#F8F8F8;
-		}
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		
-		.bs-callout {
-		    margin:20px 0px;
-		    padding:20px;
-		    border-left:3px solid #E7E7E7;
-		}
-    </style>
-
-    <!-- Core CSS - Include with every page -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <!-- Page-Level Plugin CSS - Dashboard -->
-    <link href="css/plugins/timeline/timeline.css" rel="stylesheet">
-
-    <!-- SB Admin CSS - Include with every page -->
-    <link href="css/sb-admin.css" rel="stylesheet">
-    
-    <!-- Core Scripts - Include with every page -->
-    <script src="js/jquery-1.10.2.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-
-    <!-- Page-Level Plugin Scripts - Include with every page -->
-	<script type="text/javascript" src="http://cdn.jsdelivr.net/momentjs/2.7.0/moment.min.js"></script>
-	<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.fileupload/9.5.7/js/vendor/jquery.ui.widget.js"></script>
-	<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.fileupload/9.5.7/js/jquery.iframe-transport.js"></script>
-	<script type="text/javascript" src="http://cdn.jsdelivr.net/jquery.fileupload/9.5.7/js/jquery.fileupload.js"></script>
-
-    <!-- SB Admin Scripts - Include with every page -->
-    <script src="js/sb-admin.js"></script>
-
-</head>
-
-<body>
-
-    <div id="wrapper">
-
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom:0px;">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
-                    <span class="sr-only">toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.html">crossgrade</a>
-            </div>
-        </nav>
-
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li>
-                        <a href="/indexFaq.html"><i class="fa fa-question fa-fw"></i> faq</a>
-                    </li>
-                    <li>
-                        <a href="/indexMessages.html"><i class="fa fa-bell fa-fw"></i> messages</a>
-                    </li>
-                    <li>
-                        <a href="/indexSubmissions.html"><i class="fa fa-thumb-tack fa-fw"></i> submissions</a>
-                    </li>
-                    <li>
-                        <a href="/indexEvaluations.html"><i class="fa fa-thumbs-up fa-fw"></i> evaluations</a>
-                    </li>
-                    <li>
-                        <a href="/logout"><i class="fa fa-user fa-fw"></i> logout</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <script type="text/javascript">
-			jQuery(function() {
-			    jQuery(window).resize(function() {
-			        jQuery('#page-wrapper')
-			        	.css({
-			        		'min-height': (jQuery(window).height() - jQuery('#page-wrapper').offset().top) + 'px'
-			        	})
-			        ;
-			    });
-			    
-			    jQuery(window).resize();
-			});
-        </script>
-
-
-        <div id="page-wrapper">
-            <div class="row" style="max-width:1000px;">
-                <div class="col-lg-12">
-                    <h1 class="page-header">welcome</h1>
-                </div>
-            </div>
-            <div class="row" style="max-width:1000px;">
-                <div class="col-lg-12">
-					<div class="bs-callout bs-callout-info">
-					    <h4>first aid</h4>
-					    <p>feel free to write a mail to the teaching assistant, if you have any problems / questions. he will be happy to help you out.</p>
-					</div>
-					<div class="bs-callout bs-callout-info">
-					    <h4>submission guidelines</h4>
-					    <p>always make sure to submit your files anonymized. for reports / evaluations it is recommended to use common filetypes like simple txt or pdf. if you would like to submit multiple files, please use a zip archive. it is advised to check your uploaded file by downloading it and verifying its correctness.</p>
-					</div>
-					<div class="bs-callout bs-callout-info">
-					    <h4>further reading</h4>
-					    <p>make sure to have a look at the frequently asked questions.</p>
-					</div>
-                </div>
-            </div>
-        </div>
-        <div id="page-wrapper">
-
-        </div>
-
-    </div>
-
-</body>
-
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0" />
+		
+		<title>crossgrade - welcome</title>
+		
+		<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAxlBMVEUAAABOWZ5BTZhCTZhHUpt7g7d5gbZ5grZ5grZ6grZsda9tdq9tdrBtd7Bsdq9ye7Jye7JzfLN0fbNxerJdaKdeaadfaahfaqhha6ldZ6dfaahfaqhjbat/h7mAh7mFjLx8hLh3gLV6grZ6grdfaahgaqlibKpha6ljbapRXKBSXKBUX6JTXqFSXaH///+uuNXEzOHx9Pvb4O+5wtv8/f+zvdi+x97m6vXr7/edqcujrs6/x97V2+vg5fGNmcKXo8jJ0eXQ1ucIdJUyAAAALnRSTlMACR0dI1BRUVJSiIiIiIi8vb29vdbW1tbW4uLi4uzs7Ozs7Ozx8fHx8f39/f39FstVagAAALZJREFUeNptz8cWgkAMBVAYR8Xee1fAnoQBBOz+/0+ZgaVmlXcX7ySG8TumKLV3x6PbsoSZZlkbLq7JlWb9itQiqtMn+vEDIn9cFgzWgBDD8AHB5dazGFqzAHk88PCzbDK45KUZgjuSw3BS4N85A1xQHTRE4PlxCqHaM2yJdyKKAGKydemcQde8AVYdhmKfMsCAugV9WGXCohAVjdLDTFnvremWvDbdssyeEYWmc97bjXzO/PP7F9bvG7XExUxsAAAAAElFTkSuQmCC" />
+		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" />
+		
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css" />
+		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" />
+		<style type="text/css">
+			html.fancybox-lock {
+				height:auto !important;
+				
+				overflow:visible !important;
+			}
+		</style>
+		
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.12.1/js/vendor/jquery.ui.widget.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.12.1/js/jquery.iframe-transport.min.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.12.1/js/jquery.fileupload.min.js"></script>
+		
+		<style type="text/css">
+			body {
+				cursor:default;
+				
+				background-color:#FFFFFF;
+			}
+			
+			body > table {
+				margin:40px auto 0px auto;
+			}
+			
+			body > table > tbody > tr > td:nth-child(1) {
+				width:250px;
+				max-width:250px;
+			}
+			
+			body > table > tbody > tr > td:nth-child(2) {
+				width:800px;
+				max-width:800px;
+			}
+			
+			table > tbody > tr > td {
+				vertical-align:top;
+			}
+			
+			div.panel-default {
+				margin:0px 20px 40px 20px;
+			}
+			
+			.form-control[disabled] {
+				background-color:#D43F3A;
+			}
+		</style>
+	</head>
+	<body>
+		<table><tr><td>
+		
+		<div class="panel panel-default modal-content">
+			<div class="panel-heading">
+				navigation
+			</div>
+			<div class="panel-body">
+				<ul class="nav">
+					<li>
+						<a href="/indexFaq.html"><i class="fa fa-question fa-fw"></i> faq</a>
+					</li>
+					<li>
+						<a href="/indexSubmissions.html"><i class="fa fa-thumb-tack fa-fw"></i> submissions</a>
+					</li>
+					<li>
+						<a href="/indexEvaluations.html"><i class="fa fa-thumbs-up fa-fw"></i> evaluations</a>
+					</li>
+					<li>
+						<a href="/logout"><i class="fa fa-user fa-fw"></i> logout</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		</td><td>
+		
+		<div class="panel panel-default modal-content">
+			<div class="panel-body" style="text-align:justify;">
+				<h4>first aid</h4>
+				<hr></hr>
+				<p>feel free to write a mail to the teaching assistant, if you have any problems / questions. he will be happy to help you out.</p>
+			</div>
+		</div>
+		
+		<div class="panel panel-default modal-content">
+			<div class="panel-body" style="text-align:justify;">
+				<h4>submission guidelines</h4>
+				<hr></hr>
+				<p>always make sure to submit your files anonymized. for reports / evaluations it is recommended to use common filetypes like simple txt or pdf. if you would like to submit multiple files, please use a zip archive. it is advised to check your uploaded file by downloading it and verifying its correctness.</p>
+			</div>
+		</div>
+		
+		<div class="panel panel-default modal-content">
+			<div class="panel-body" style="text-align:justify;">
+				<h4>further reading</h4>
+				<hr></hr>
+				<p>make sure to have a look at the frequently asked questions.</p>
+			</div>
+		</div>
+		
+		</td></tr></table>
+	</body>
 </html>
